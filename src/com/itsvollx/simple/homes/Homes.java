@@ -59,12 +59,13 @@ public class Homes {
 	Player p = Bukkit.getPlayer(UUID);	
 
 	if(HomeFile.get("Homes." + homename.toUpperCase()) == null) {
-	p.sendMessage(Message.getMessage("Messages.goHome.noHomeSet").replace("{home}", homename.toUpperCase()));
+	p.sendMessage(Message.getMessage("goHome.noHomeSet").replace("{home}", homename.toUpperCase()));
 	return;
 	}
 	
 	
 	p.sendMessage(Message.getMessage("Messages.goHome.success").replace("{home}", homename.toUpperCase()));
+		p.sendMessage(Message.getMessage("goHome.success").replace("{home}", homename.toUpperCase()));
 	
     Location home = sc.getLocation(HomeFilePath, "Homes", homename.toUpperCase());
 

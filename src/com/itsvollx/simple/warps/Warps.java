@@ -43,6 +43,7 @@ public class Warps {
 	p.teleport(sc.getLocation(WarpsFilePath, "Warps.", warpname));
 	p.playSound(p, Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
 	p.sendMessage(Message.getMessage("Messages.warps.teleportToWarp").replace("{warp}", warpname));
+		p.sendMessage(Message.getMessage("warps.teleportToWarp").replace("{warp}", warpname));
 	}
 	
 	

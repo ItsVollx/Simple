@@ -1,13 +1,10 @@
-package com.itsvollx.simple.listeners;
+import com.itsvollx.simple.config.SimpleConfigs;
+package com.itsvollx.simple;
 
 import java.util.Arrays;
 import java.util.List;
 
-import com.itsvollx.simple.Simple;
-import com.itsvollx.simple.config.SimpleConfigs;
-
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
 import org.bukkit.attribute.Attributable;
@@ -18,14 +15,12 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
@@ -39,7 +34,6 @@ import org.bukkit.Location;
 import com.itsvollx.simple.inventory.PagedMenu;
 import com.itsvollx.simple.inventory.HomesMenu;
 import com.itsvollx.simple.inventory.AuctionInventory;
-import com.itsvollx.simple.inventory.WarpsMenu;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -162,37 +156,6 @@ public class SimpleEvents implements Listener {
 
 	        Entity entity = event.getRightClicked();
 	        Player player = event.getPlayer();
-	        
-	        // Handle item frame interactions
-	        if (entity instanceof ItemFrame) {
-	            ItemFrame frame = (ItemFrame) entity;
-	            ItemStack frameItem = frame.getItem();
-	            
-	            if (frameItem != null && frameItem.getType() != Material.AIR) {
-	                // Clock in frame - show time
-	                if (frameItem.getType() == Material.CLOCK) {
-	                    event.setCancelled(true);
-	                    long time = player.getWorld().getTime();
-	                    long hours = (time / 1000 + 6) % 24;
-	                    long minutes = (time % 1000) * 60 / 1000;
-	                    String period = hours >= 12 ? "PM" : "AM";
-	                    long displayHours = hours % 12;
-	                    if (displayHours == 0) displayHours = 12;
-	                    
-	                    player.sendMessage(String.format("§eTime: §6%02d:%02d %s §7(Day %d)", 
-	                        displayHours, minutes, period, player.getWorld().getFullTime() / 24000));
-	                    return;
-	                }
-	                
-	                // Compass in frame - open warps menu
-	                if (frameItem.getType() == Material.COMPASS) {
-	                    event.setCancelled(true);
-	                    WarpsMenu menu = new WarpsMenu();
-	                    menu.open(player);
-	                    return;
-	                }
-	            }
-	        }
 
 	        ItemStack itemInHand = player.getInventory().getItemInMainHand();
 	        if (itemInHand != null && itemInHand.hasItemMeta()) {
@@ -281,22 +244,15 @@ public class SimpleEvents implements Listener {
 	     int slot = event.getSlot();
 	     ItemStack clickedItem = event.getCurrentItem();
 	     
-	     // Handle paginated warps menu
-	     if(title.contains("Warps")) {
+	     // Handle warps menu
+	     if(title.equals("Warps")) {
 	         event.setCancelled(true);
 	         
-	         WarpsMenu menu = new WarpsMenu();
+	         if(clickedItem == null || !clickedItem.hasItemMeta()) return;
 	         
-	         // Check for navigation clicks
-	         if(PagedMenu.handleClick(player, title, slot, menu)) {
-	             return;
-	         }
-	         
-	         // Handle warp item clicks
-	         if(clickedItem != null && clickedItem.hasItemMeta()) {
-	             player.closeInventory();
-	             menu.handleWarpClick(player, clickedItem);
-	         }
+	         String warpName = clickedItem.getItemMeta().getDisplayName().substring(2);
+	         player.closeInventory();
+	         new Warps(player.getUniqueId()).Teleport(warpName);
 	         return;
 	     }
 	     
@@ -427,25 +383,5 @@ public class SimpleEvents implements Listener {
 	     SitAndLay.removeSitting(event.getPlayer().getUniqueId());
 	 }
 	 
-	 @EventHandler
-	 public void onEntityDamage(EntityDamageByEntityEvent event) {
-	     // Protect tamed animals from being damaged by other players
-	     if (!(event.getDamager() instanceof Player)) return;
-	     if (!(event.getEntity() instanceof Tameable)) return;
-	     
-	     Player damager = (Player) event.getDamager();
-	     Tameable pet = (Tameable) event.getEntity();
-	     
-	     // Check if the pet is tamed and has an owner
-	     if (!pet.isTamed() || pet.getOwner() == null) return;
-	     
-	     // If the damager is not the owner, cancel the damage
-	     if (!pet.getOwner().getUniqueId().equals(damager.getUniqueId())) {
-	         event.setCancelled(true);
-	         damager.sendMessage("§cYou can't hurt " + pet.getOwner().getName() + "'s pet!");
-	     }
-	 }
-	 
 	 
 }
-
