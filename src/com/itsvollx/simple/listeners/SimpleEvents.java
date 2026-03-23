@@ -23,6 +23,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
@@ -391,6 +392,25 @@ public class SimpleEvents implements Listener {
 	 public void onPlayerQuit(PlayerQuitEvent event) {
 	     // Clean up sitting/laying when player leaves
 	     SitAndLay.removeSitting(event.getPlayer().getUniqueId());
+	 }
+	 
+	 @EventHandler
+	 public void onEntityDamage(EntityDamageByEntityEvent event) {
+	     // Protect tamed animals from being damaged by other players
+	     if (!(event.getDamager() instanceof Player)) return;
+	     if (!(event.getEntity() instanceof Tameable)) return;
+	     
+	     Player damager = (Player) event.getDamager();
+	     Tameable pet = (Tameable) event.getEntity();
+	     
+	     // Check if the pet is tamed and has an owner
+	     if (!pet.isTamed() || pet.getOwner() == null) return;
+	     
+	     // If the damager is not the owner, cancel the damage
+	     if (!pet.getOwner().getUniqueId().equals(damager.getUniqueId())) {
+	         event.setCancelled(true);
+	         damager.sendMessage("§cYou can't hurt " + pet.getOwner().getName() + "'s pet!");
+	     }
 	 }
 	 
 	 
