@@ -36,6 +36,7 @@ import org.bukkit.Location;
 import com.itsvollx.simple.inventory.PagedMenu;
 import com.itsvollx.simple.inventory.HomesMenu;
 import com.itsvollx.simple.inventory.AuctionInventory;
+import com.itsvollx.simple.inventory.WarpsMenu;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -246,15 +247,22 @@ public class SimpleEvents implements Listener {
 	     int slot = event.getSlot();
 	     ItemStack clickedItem = event.getCurrentItem();
 	     
-	     // Handle warps menu
-	     if(title.equals("Warps")) {
+	     // Handle paginated warps menu
+	     if(title.contains("Warps")) {
 	         event.setCancelled(true);
 	         
-	         if(clickedItem == null || !clickedItem.hasItemMeta()) return;
+	         WarpsMenu menu = new WarpsMenu();
 	         
-	         String warpName = clickedItem.getItemMeta().getDisplayName().substring(2);
-	         player.closeInventory();
-	         new Warps(player.getUniqueId()).Teleport(warpName);
+	         // Check for navigation clicks
+	         if(PagedMenu.handleClick(player, title, slot, menu)) {
+	             return;
+	         }
+	         
+	         // Handle warp item clicks
+	         if(clickedItem != null && clickedItem.hasItemMeta()) {
+	             player.closeInventory();
+	             menu.handleWarpClick(player, clickedItem);
+	         }
 	         return;
 	     }
 	     

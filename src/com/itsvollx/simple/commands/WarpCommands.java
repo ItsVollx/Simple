@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.itsvollx.simple.warps.Warps;
+import com.itsvollx.simple.inventory.WarpsMenu;
 
 public class WarpCommands implements CommandExecutor {
 
@@ -20,7 +21,8 @@ public class WarpCommands implements CommandExecutor {
         Warps warps = new Warps(player.getUniqueId());
         
         if(label.equalsIgnoreCase("warps")) {
-            warps.openGUI();
+            WarpsMenu menu = new WarpsMenu();
+            menu.open(player);
             return true;
         }
         
