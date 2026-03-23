@@ -73,26 +73,21 @@ public class SimpleConfigs {
     // Setup server files by adding predefined file names
     private void setupServerFiles() {
         if (ServerFilePaths.isEmpty()) {
+            ServerFilePaths.put("Homes", "homes.yml");
+            ServerFilePaths.put("Warps", "warps.yml");
+            ServerFilePaths.put("Teleport", "teleport.yml");
+            ServerFilePaths.put("General", "general.yml");
             ServerFilePaths.put("Messages", "Messages.yml");
-            ServerFilePaths.put("Warps", "Warps.yml");
+            ServerFilePaths.put("AuctionHouse", "AuctionHouse.yml");
+            ServerFilePaths.put("Spawn", "Spawn.yml");
+            ServerFilePaths.put("Holograms", "Holograms.yml");
             ServerFilePaths.put("Config", "config.yml");
 
             // Create all server files
             for (String fileName : ServerFilePaths.values()) {
                 createFile(PluginFolder + File.separator + fileName);
-                if(!fileName.equals("config.yml")) {
-                    writeResourceToConfigFile(fileName, fileName);
-                }
+                writeResourceToConfigFile(fileName, fileName);
             }
-            
-            // Set default config values if not exists
-            String configPath = getConfigPath("config.yml");
-            YamlConfiguration config = getConfig(configPath);
-            if(!config.contains("bed-set-home")) {
-                config.set("bed-set-home", true);
-                saveConfig(configPath, config);
-            }
-            
         }
     }
 

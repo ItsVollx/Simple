@@ -1,0 +1,6 @@
+# Auction House listings
+# Format:
+# listing-id:
+#   seller: player-uuid
+#   price: 100.0
+#   item: serialized-item-data

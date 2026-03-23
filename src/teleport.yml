@@ -1,0 +1,5 @@
+# Server teleport settings
+# Teleport request timeout in seconds
+timeout: 60
+# Cooldown between teleport requests in seconds
+cooldown: 5

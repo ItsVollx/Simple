@@ -1,0 +1,20 @@
+# Simple Plugin Configuration
+
+# When true, sleeping in a bed will set it as your home
+bed-set-home: true
+
+# Economy settings
+economy:
+  starting-balance: 100.0
+  currency-symbol: "$"
+
+# Teleport settings
+teleport:
+  request-timeout: 60
+  cooldown: 5
+
+# Phantom force field protection
+phantom-protection:
+  enabled: true
+  radius: 8.0
+  damage: 2.0
