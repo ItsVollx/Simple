@@ -1,0 +1,26 @@
+Messages:
+  goHome:
+    success: "You have been teleported to your home: {home}."
+    noHomeSet: "You have not set a home named {home}. Use /sethome {home} to set it."
+  setHome:
+    success: "Home {home} has been set successfully!"
+    error: "An error occurred while setting your home {home}. Please try again."
+  delHome:
+    success: "Your home {home} has been deleted successfully."
+    noHomeSet: "You don't have a home named {home} to delete. Use /sethome {home} to set one."
+  teleport:
+    requestSent: "Teleport request sent to {player}."
+    requestReceived: "{player} has requested to teleport to you. Type /accept or /deny."
+    accepted: "Teleport request accepted."
+    denied: "Teleport request denied."
+  warps:
+    warpSet: "Warp {warp} has been created successfully."
+    warpDeleted: "Warp {warp} has been deleted."
+    warpNotFound: "Warp {warp} does not exist."
+    teleportToWarp: "Teleporting to warp {warp}."
+  error:
+    noPermission: "You do not have permission to use this command."
+    commandNotFound: "Command not recognized. Type /help for a list of commands."
+  general:
+    welcome: "Welcome back, {player}!"
+    farewell: "Goodbye, {player}! See you next time."

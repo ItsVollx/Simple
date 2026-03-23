@@ -1,0 +1,91 @@
+name: Simple
+main: com.itsvollx.simple.Simple
+version: 1.0
+api-version: 1.21
+author: itsvollx
+commands:
+  simple:
+    description: info
+  sethome:
+    description: Set your home location.
+  delhome:
+    description: Delete a home by name.
+  home:
+    description: Teleport to a home by name.
+  homes:
+    description: List your homes.
+  homelist:
+    description: Alias for /homes.
+  ping:
+    description: Alias for /ping
+  back:
+    description: Alias for /back
+  warp:
+    description: Alias for /warp
+  warps:
+    description: Alias for /warps
+  setwarp:
+    description: Alias for /setwarp
+  echest:
+    description: Alias for /echest
+  trash:
+    description: Alias for /trash
+  auction:
+    description: Open the auction house
+    aliases: [ah]
+  tpa:
+    description: Request to teleport to a player
+  tpahere:
+    description: Request a player to teleport to you
+  tpaccept:
+    description: Accept a teleport request
+  tpdeny:
+    description: Deny a teleport request
+  tp:
+    description: Teleport to a player (admin)
+  tphere:
+    description: Teleport a player to you (admin)
+  delwarp:
+    description: Delete a warp
+  hologram:
+    description: Hologram management command
+  holo:
+    description: Alias for /hologram
+  spawn:
+    description: Teleport to spawn
+  setspawn:
+    description: Set the spawn location
+  top:
+    description: Teleport to the highest block
+  time:
+    description: Check the current world time
+  bedhome:
+    description: Toggle bed spawn point setting
+  workbench:
+    description: Open a virtual crafting table
+  anvil:
+    description: Open a virtual anvil
+  endme:
+    description: End yourself
+  hat:
+    description: Wear the item in your hand as a hat
+  sit:
+    description: Sit down where you are
+  lay:
+    description: Lay down on the ground
+    aliases: [laydown]
+  balance:
+    description: Check your balance
+    aliases: [bal, money]
+  pay:
+    description: Pay money to another player
+    aliases: [givemoney, sendmoney]
+  baltop:
+    description: View the richest players
+    aliases: [moneytop, richest, balancetop]
+  eco:
+    description: Economy admin commands
+    aliases: [economy]
+  ah:
+    description: Open the auction house
+    aliases: [auctionhouse]
