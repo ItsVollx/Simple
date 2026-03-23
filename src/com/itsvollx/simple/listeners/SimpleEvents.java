@@ -7,6 +7,7 @@ import com.itsvollx.simple.Simple;
 import com.itsvollx.simple.config.SimpleConfigs;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
 import org.bukkit.attribute.Attributable;
@@ -17,6 +18,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
@@ -160,6 +162,37 @@ public class SimpleEvents implements Listener {
 
 	        Entity entity = event.getRightClicked();
 	        Player player = event.getPlayer();
+	        
+	        // Handle item frame interactions
+	        if (entity instanceof ItemFrame) {
+	            ItemFrame frame = (ItemFrame) entity;
+	            ItemStack frameItem = frame.getItem();
+	            
+	            if (frameItem != null && frameItem.getType() != Material.AIR) {
+	                // Clock in frame - show time
+	                if (frameItem.getType() == Material.CLOCK) {
+	                    event.setCancelled(true);
+	                    long time = player.getWorld().getTime();
+	                    long hours = (time / 1000 + 6) % 24;
+	                    long minutes = (time % 1000) * 60 / 1000;
+	                    String period = hours >= 12 ? "PM" : "AM";
+	                    long displayHours = hours % 12;
+	                    if (displayHours == 0) displayHours = 12;
+	                    
+	                    player.sendMessage(String.format("§eTime: §6%02d:%02d %s §7(Day %d)", 
+	                        displayHours, minutes, period, player.getWorld().getFullTime() / 24000));
+	                    return;
+	                }
+	                
+	                // Compass in frame - open warps menu
+	                if (frameItem.getType() == Material.COMPASS) {
+	                    event.setCancelled(true);
+	                    WarpsMenu menu = new WarpsMenu();
+	                    menu.open(player);
+	                    return;
+	                }
+	            }
+	        }
 
 	        ItemStack itemInHand = player.getInventory().getItemInMainHand();
 	        if (itemInHand != null && itemInHand.hasItemMeta()) {
